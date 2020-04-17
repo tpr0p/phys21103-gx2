@@ -1,0 +1,7 @@
+# ignore binaries
+*.DS_Store
+
+# ignore editor files
+*.vscode
+*~
+*#
