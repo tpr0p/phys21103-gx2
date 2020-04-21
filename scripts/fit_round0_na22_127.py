@@ -1,6 +1,8 @@
 """
 fit_round0_na22_127.py - This module contains guassian fits to the 1.27 MeV
 full energy peak for the Na22 source using round 0 data.
+
+Author: Thomas
 """
 
 import os
@@ -33,6 +35,9 @@ for step_name in ROUND0_NA22_STEP_NAMES:
                                                              "round0_na22_127_{}_fit.png".format(step_name)))
     ROUND0_NA22_127_STEP_PLOT_TITLES.append("Round 0 - Na22 - 1.27Mev - {}".format(step_name.upper()))
 #ENDFOR
+ROUND0_NA22_127_STEP_NET_COUNTS_SAVE_FILE_PATH = os.path.join(
+    ASSETS_PATH, "round0_na22_127_step_netcounts.png"
+)
 
 
 # data constants
@@ -192,6 +197,17 @@ ROUND0_NA22_127_STEP_DATA = [
         ROUND0_NA22_127_H9_PLOT_TEXT,
     ),
 ]
+ROUND0_NA22_127_STEP_NET_COUNTS = np.array([
+    (640, 40),
+    (730, 40),
+    (610, 40),
+    (723, 40),
+    (760, 40),
+    (780, 60),
+    (870, 60),
+    (700, 40),
+    (760, 50),
+])
 
 
 # processing constants
@@ -293,7 +309,8 @@ def fit_and_plot(data_file_path,
         counts_fit = fitfunc(pf, channels_fit)
         plt.figure()
         plt.scatter(channels_extend, counts_extend, label="data", color="blue", s=MARKER_SIZE)
-        plt.errorbar(channels_slice, counts_slice, yerr=dcounts_slice, fmt=".", ms=MARKER_SIZE, linestyle="None", label="data in fit", color="red")
+        plt.errorbar(channels_slice, counts_slice, yerr=dcounts_slice,
+                     fmt=".", ms=MARKER_SIZE, linestyle="None", label="data in fit", color="red")
         plt.plot(channels_fit, counts_fit, label="fit", color="black")
         if plot_title is not None:
             plt.title(plot_title)
@@ -305,10 +322,35 @@ def fit_and_plot(data_file_path,
         plt.savefig(save_file_path, dpi=DPI)
     #ENDIF
 
-    return 
+    return
+
+
+def plot_na22_127_step_counts():
+    """
+    Plot the net count obtained from the Na22 1.27 MeV peak fit for each
+    step measurement.
+    
+    Arguments: None
+    Returns: None
+    """
+    plt.figure()
+    net_counts = ROUND0_NA22_127_STEP_NET_COUNTS[:, 0]
+    dnet_counts = ROUND0_NA22_127_STEP_NET_COUNTS[:, 1]
+    step_axis = np.arange(ROUND0_STEP_COUNT) + 1
+    plt.errorbar(step_axis, net_counts, yerr=dnet_counts, linestyle="None",
+                 fmt=".", ms=MARKER_SIZE)
+    plt.title("Na22 - 1.27 MeV - Height Step Net Counts")
+    plt.ylabel("Net Count")
+    plt.xlabel("Height Step")
+    plt.savefig(ROUND0_NA22_127_STEP_NET_COUNTS_SAVE_FILE_PATH,
+                dpi=DPI)
+    return
 
 
 def main():
+    """
+    Do all the things.
+    """
     # Round 0 - Na22 - 1.27 MeV - Height Steps
     if False:
         # all
@@ -330,6 +372,11 @@ def main():
             )
         #ENDFOR
     #ENDIF
+    if True:
+        plot_na22_127_step_counts()
+    #ENDIF
+
+
 
 
 if __name__ == "__main__":
