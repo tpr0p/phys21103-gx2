@@ -1,5 +1,6 @@
 # ignore binaries
 *.DS_Store
+*.ipynb_checkpoints
 
 # ignore editor files
 *.vscode
