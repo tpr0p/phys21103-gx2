@@ -88,7 +88,7 @@ ROUND0_NA22_127_H3_PLOT_TEXT = (
     "$\sigma = 15 \pm 1$ channel\n"
     "$A = 12 \pm 5$ counts\n"
     "$B = (-1.4 \pm 0.6) 10^{-2}$ counts/channel\n"
-    "$\widetilde{\chi^{2}} = 1$\n",
+    "$\widetilde{\chi^{2}} = 1.30$\n",
 )
 ROUND0_NA22_127_H4_PLOT_TEXT = (
     680,
@@ -357,7 +357,7 @@ def main():
         round0_na22_127_step_indices = np.arange(ROUND0_STEP_COUNT)
         # selected
         # round0_na22_127_step_indices = np.array([
-        #     8,
+        #     2,
         # ])
         for i in round0_na22_127_step_indices:
             (channel_lo, channel_hi, plot_text) = ROUND0_NA22_127_STEP_DATA[i]
@@ -372,7 +372,7 @@ def main():
             )
         #ENDFOR
     #ENDIF
-    if True:
+    if False:
         plot_na22_127_step_counts()
     #ENDIF
 
