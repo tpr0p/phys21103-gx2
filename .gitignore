@@ -1,6 +1,7 @@
 # ignore binaries
 *.DS_Store
 *.ipynb_checkpoints
+__pycache__
 
 # ignore editor files
 *.vscode
