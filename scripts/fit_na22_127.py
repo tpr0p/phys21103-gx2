@@ -78,6 +78,32 @@ ROUND2_NA22_127_STEP_COUNTS_SAVE_FILE_PATH = os.path.join(
     ASSETS_PATH, "round2_na22_127_step_counts.png"
 )
 
+ROUND3_NA22_STEP_NAMES = [
+    "calibration",
+    "6mm_Mid", "4.5mm_Mid", "3mm_Mid", "2mm_Mid", "1.5mm_Mid", "1mm_Mid", "0.5mm_Mid",
+    "6mm_top", "4.5mm_top", "3mm_top", "2mm_top", "1.5mm_top", "1mm_top", "0.5mm_top"
+]
+ROUND3_STEP_COUNT = len(ROUND3_NA22_STEP_NAMES)
+ROUND3_NA22_STEP_DATA_FILE_PATHS = list()
+ROUND3_NA22_127_STEP_SAVE_FILE_PATHS = list()
+ROUND3_NA22_127_STEP_PLOT_TITLES = list()
+for step_name in ROUND3_NA22_STEP_NAMES:
+    ROUND3_NA22_STEP_DATA_FILE_PATHS.append(os.path.join(DATA_PATH,
+                                                         "round3_na22_{}.tsv".format(step_name)))
+    ROUND3_NA22_127_STEP_SAVE_FILE_PATHS.append(os.path.join(ASSETS_PATH,
+                                                             "round3_na22_127_{}_fit.png".format(step_name)))
+    ROUND3_NA22_127_STEP_PLOT_TITLES.append("Round 3 - Na22 - 1.27Mev - {}".format(step_name.upper()))
+#ENDFOR
+ROUND3_NA22_127_STEP_COUNTS_SAVE_FILE_PATH = os.path.join(
+    ASSETS_PATH, "round3_na22_127_step_counts.png"
+)
+ROUND3_NA22_127_CENTROIDS_MID_SAVE_FILE_PATH = os.path.join(
+    ASSETS_PATH, "round3_na22_127_centroids_mid.png"
+)
+ROUND3_NA22_127_CENTROIDS_TOP_SAVE_FILE_PATH = os.path.join(
+    ASSETS_PATH, "round3_na22_127_centroids_top.png"
+)
+
 def solid_angle_cone(theta):
     """
     Solid angle of a cone with apex diameter 2 * theta.
@@ -150,6 +176,29 @@ ROUND2_NA22_127_STEP_GROSS_COUNTS = np.array([
     tup_n_dn(3117),
 ])
 
+# data constants - round 3
+# 6mm...0mm
+ROUND3_NA22_127_MID_PEAKS = np.array([
+    (716.8, 0.4),
+    (717.0, 0.4),
+    (717.4, 0.4),
+    (717.0, 0.4),
+    (716.8, 0.4),
+    (716.8, 0.4),
+    (715.7, 0.4),
+])
+# 0mm, 6mm...0.5mm
+ROUND3_NA22_127_TOP_PEAKS = np.array([
+    (736.8, 0.3),
+    (730.8, 0.4),
+    (727.0, 0.4),
+    (720.9, 0.4),
+    (720.6, 0.4),
+    (718.9, 0.4),
+    (718.0, 0.4),
+    (718.3, 0.4),
+])
+
 # data constants - round 0 - apparatus (lengths in 1e-3 m)
 # SA - solid angle
 # SAR - solid angle ratio
@@ -190,6 +239,11 @@ ROUND0_RS = ROUND0_GROSS_ABSORBER_COUNTS / ROUND0_NET_DETECTOR_COUNTS
 # data constants - round 1 apparatus (lengths in 1e-3 m)
 ROUND2_HEIGHTS = ROUND1_HEIGHTS = np.array([0, 46, 90, 135, 154])
 ROUND2_DHEIGHTS = ROUND1_DHEIGHTS = np.array([2, 2,  2,   2,   2])
+
+# data constants - round 3 apparatus (lengths in 1e-3 m)
+ROUND3_THICKNESSES = np.array([5.98, 4.52, 3.04, 1.96, 1.55, 1.00, 0.49, 0,])
+ROUND3_DTHICKNESSES = np.array([1e-2] * len(ROUND3_THICKNESSES))
+ROUND3_TOP_TIMES = np.array([602, 1233, 1901, 5346, 5858, 6557, 7091, 7524])
 
 # data constants - gaussian fits - round 0
 ROUND0_NA22_127_STEP_INITIAL_PARAMETERS = [200., 750., 10., 1., 1.]
@@ -529,12 +583,275 @@ ROUND2_NA22_127_STEP_DATA = [
     ),
  ]
 
+# data constants - gaussian fits - round 3
+ROUND3_NA22_127_STEP_INITIAL_PARAMETERS = [200., 750., 10., 1., 1.]
+# CALIBRATION
+ROUND3_NA22_127_0MM_CHANNEL_LO = 670
+ROUND3_NA22_127_0MM_CHANNEL_HI = 800
+# MID
+ROUND3_NA22_127_6MM_MID_CHANNEL_LO = 650
+ROUND3_NA22_127_6MM_MID_CHANNEL_HI = 785
+ROUND3_NA22_127_45MM_MID_CHANNEL_LO = 650
+ROUND3_NA22_127_45MM_MID_CHANNEL_HI = 785
+ROUND3_NA22_127_3MM_MID_CHANNEL_LO = 650
+ROUND3_NA22_127_3MM_MID_CHANNEL_HI = 785
+ROUND3_NA22_127_2MM_MID_CHANNEL_LO = 655
+ROUND3_NA22_127_2MM_MID_CHANNEL_HI = 785
+ROUND3_NA22_127_15MM_MID_CHANNEL_LO = 655
+ROUND3_NA22_127_15MM_MID_CHANNEL_HI = 785
+ROUND3_NA22_127_1MM_MID_CHANNEL_LO = 655
+ROUND3_NA22_127_1MM_MID_CHANNEL_HI = 785
+ROUND3_NA22_127_05MM_MID_CHANNEL_LO = 655
+ROUND3_NA22_127_05MM_MID_CHANNEL_HI = 785
+# TOP
+ROUND3_NA22_127_6MM_TOP_CHANNEL_LO = 665
+ROUND3_NA22_127_6MM_TOP_CHANNEL_HI = 795
+ROUND3_NA22_127_45MM_TOP_CHANNEL_LO = 665
+ROUND3_NA22_127_45MM_TOP_CHANNEL_HI = 795
+ROUND3_NA22_127_3MM_TOP_CHANNEL_LO = 665
+ROUND3_NA22_127_3MM_TOP_CHANNEL_HI = 785
+ROUND3_NA22_127_2MM_TOP_CHANNEL_LO = 660
+ROUND3_NA22_127_2MM_TOP_CHANNEL_HI = 790
+ROUND3_NA22_127_15MM_TOP_CHANNEL_LO = 655
+ROUND3_NA22_127_15MM_TOP_CHANNEL_HI = 785
+ROUND3_NA22_127_1MM_TOP_CHANNEL_LO = 655
+ROUND3_NA22_127_1MM_TOP_CHANNEL_HI = 785
+ROUND3_NA22_127_05MM_TOP_CHANNEL_LO = 655
+ROUND3_NA22_127_05MM_TOP_CHANNEL_HI = 785
+ROUND3_NA22_127_0MM_PLOT_TEXT = (
+    630,
+    100,
+    "$N = (6.5 \pm 0.1) 10^{3}$ counts\n"
+    "$\mu = 736.8 \pm 0.3$ channel\n"
+    "$\sigma = 19.4 \pm 0.3$ channel\n"
+    "$A = 20 \pm 4$ counts\n"
+    "$B = (-2.5 \pm 0.6) 10^{-2}$ counts/channel\n"
+    "$\widetilde{\chi^{2}} = 1.08$\n",
+)
+ROUND3_NA22_127_6MM_MID_PLOT_TEXT = (
+    610,
+    50,
+    "$N = (2.93 \pm 0.06) 10^{3}$ counts\n"
+    "$\mu = 716.8 \pm 0.4$ channel\n"
+    "$\sigma = 18.8 \pm 0.4$ channel\n"
+    "$A = 15 \pm 3$ counts\n"
+    "$B = (-1.9 \pm 0.3) 10^{-2}$ counts/channel\n"
+    "$\widetilde{\chi^{2}} = 0.79$\n",
+)
+ROUND3_NA22_127_45MM_MID_PLOT_TEXT = (
+    610,
+    50,
+    "$N = (2.93 \pm 0.06) 10^{3}$ counts\n"
+    "$\mu = 717.0 \pm 0.4$ channel\n"
+    "$\sigma = 19.0 \pm 0.4$ channel\n"
+    "$A = 11 \pm 3$ counts\n"
+    "$B = (-1.4 \pm 0.4) 10^{-2}$ counts/channel\n"
+    "$\widetilde{\chi^{2}} = 0.89$\n",
+)
+ROUND3_NA22_127_3MM_MID_PLOT_TEXT = (
+    610,
+    50,
+    "$N = (3.01 \pm 0.06) 10^{3}$ counts\n"
+    "$\mu = 717.4 \pm 0.4$ channel\n"
+    "$\sigma = 18.3 \pm 0.4$ channel\n"
+    "$A = 8 \pm 3$ counts\n"
+    "$B = (-1.0 \pm 0.4) 10^{-2}$ counts/channel\n"
+    "$\widetilde{\chi^{2}} = 0.98$\n",
+)
+ROUND3_NA22_127_2MM_MID_PLOT_TEXT = (
+    610,
+    50,
+    "$N = (3.02 \pm 0.07) 10^{3}$ counts\n"
+    "$\mu = 717.0 \pm 0.4$ channel\n"
+    "$\sigma = 18.6 \pm 0.4$ channel\n"
+    "$A = 4 \pm 3$ counts\n"
+    "$B = (-4 \pm 5) 10^{-3}$ counts/channel\n"
+    "$\widetilde{\chi^{2}} = 1.22$\n",
+)
+ROUND3_NA22_127_15MM_MID_PLOT_TEXT = (
+    610,
+    50,
+    "$N = (3.13 \pm 0.07) 10^{3}$ counts\n"
+    "$\mu = 716.8 \pm 0.4$ channel\n"
+    "$\sigma = 19.3 \pm 0.4$ channel\n"
+    "$A = 7 \pm 3$ counts\n"
+    "$B = (-9 \pm 5) 10^{-3}$ counts/channel\n"
+    "$\widetilde{\chi^{2}} = 1.02$\n",
+)
+ROUND3_NA22_127_1MM_MID_PLOT_TEXT = (
+    610,
+    50,
+    "$N = (3.12 \pm 0.07) 10^{3}$ counts\n"
+    "$\mu = 716.8 \pm 0.4$ channel\n"
+    "$\sigma = 18.9 \pm 0.4$ channel\n"
+    "$A = 6 \pm 3$ counts\n"
+    "$B = (-8 \pm 4) 10^{-3}$ counts/channel\n"
+    "$\widetilde{\chi^{2}} = 0.96$\n",
+)
+ROUND3_NA22_127_05MM_MID_PLOT_TEXT = (
+    610,
+    50,
+    "$N = (3.27 \pm 0.07) 10^{3}$ counts\n"
+    "$\mu = 715.7 \pm 0.4$ channel\n"
+    "$\sigma = 18.9 \pm 0.4$ channel\n"
+    "$A = 5 \pm 3$ counts\n"
+    "$B = (-6 \pm 4) 10^{-3}$ counts/channel\n"
+    "$\widetilde{\chi^{2}} = 1.07$\n",
+)
+ROUND3_NA22_127_6MM_TOP_PLOT_TEXT = (
+    630,
+    65,
+    "$N = (2.95 \pm 0.07) 10^{3}$ counts\n"
+    "$\mu = 730.8 \pm 0.4$ channel\n"
+    "$\sigma = 19.4 \pm 0.4$ channel\n"
+    "$A = 8 \pm 3$ counts\n"
+    "$B = (-1.0 \pm 0.4) 10^{-2}$ counts/channel\n"
+    "$\widetilde{\chi^{2}} = 1.22$\n",
+)
+ROUND3_NA22_127_45MM_TOP_PLOT_TEXT = (
+    630,
+    60,
+    "$N = (3.10 \pm 0.07) 10^{3}$ counts\n"
+    "$\mu = 727.0 \pm 0.4$ channel\n"
+    "$\sigma = 19.7 \pm 0.4$ channel\n"
+    "$A = 7 \pm 3$ counts\n"
+    "$B = (-9 \pm 4) 10^{-3}$ counts/channel\n"
+    "$\widetilde{\chi^{2}} = 0.75$\n",
+)
+ROUND3_NA22_127_3MM_TOP_PLOT_TEXT = (
+    630,
+    60,
+    "$N = (2.97 \pm 0.07) 10^{3}$ counts\n"
+    "$\mu = 720.9 \pm 0.4$ channel\n"
+    "$\sigma = 18.5 \pm 0.4$ channel\n"
+    "$A = 13 \pm 5$ counts\n"
+    "$B = (-1.6 \pm 0.7) 10^{-2}$ counts/channel\n"
+    "$\widetilde{\chi^{2}} = 0.98$\n",
+)
+ROUND3_NA22_127_2MM_TOP_PLOT_TEXT = (
+    630,
+    55,
+    "$N = (3.14 \pm 0.07) 10^{3}$ counts\n"
+    "$\mu = 720.6 \pm 0.4$ channel\n"
+    "$\sigma = 19.0 \pm 0.4$ channel\n"
+    "$A = 6 \pm 4$ counts\n"
+    "$B = (-8 \pm 5) 10^{-3}$ counts/channel\n"
+    "$\widetilde{\chi^{2}} = 1.15$\n",
+)
+ROUND3_NA22_127_15MM_TOP_PLOT_TEXT = (
+    610,
+    60,
+    "$N = (3.19 \pm 0.07) 10^{3}$ counts\n"
+    "$\mu = 718.9 \pm 0.4$ channel\n"
+    "$\sigma = 19.4 \pm 0.4$ channel\n"
+    "$A = 8 \pm 3$ counts\n"
+    "$B = (-9 \pm 5) 10^{-3}$ counts/channel\n"
+    "$\widetilde{\chi^{2}} = 0.97$\n",
+)
+ROUND3_NA22_127_1MM_TOP_PLOT_TEXT = (
+    610,
+    60,
+    "$N = (3.02 \pm 0.07) 10^{3}$ counts\n"
+    "$\mu = 718.0 \pm 0.4$ channel\n"
+    "$\sigma = 18.8 \pm 0.4$ channel\n"
+    "$A = 10 \pm 4$ counts\n"
+    "$B = (-1.2 \pm 0.5) 10^{-2}$ counts/channel\n"
+    "$\widetilde{\chi^{2}} = 1.15$\n",
+)
+ROUND3_NA22_127_05MM_TOP_PLOT_TEXT = (
+    610,
+    60,
+    "$N = (3.13 \pm 0.07) 10^{3}$ counts\n"
+    "$\mu = 718.3 \pm 0.4$ channel\n"
+    "$\sigma = 19.4 \pm 0.4$ channel\n"
+    "$A = 11 \pm 4$ counts\n"
+    "$B = (-1.4 \pm 0.4) 10^{-2}$ counts/channel\n"
+    "$\widetilde{\chi^{2}} = 0.80$\n",
+)
+ROUND3_NA22_127_STEP_DATA = [
+    (
+        ROUND3_NA22_127_0MM_CHANNEL_LO,
+        ROUND3_NA22_127_0MM_CHANNEL_HI,
+        ROUND3_NA22_127_0MM_PLOT_TEXT,
+    ),
+    (
+        ROUND3_NA22_127_6MM_MID_CHANNEL_LO,
+        ROUND3_NA22_127_6MM_MID_CHANNEL_HI,
+        ROUND3_NA22_127_6MM_MID_PLOT_TEXT,
+    ),
+    (
+        ROUND3_NA22_127_45MM_MID_CHANNEL_LO,
+        ROUND3_NA22_127_45MM_MID_CHANNEL_HI,
+        ROUND3_NA22_127_45MM_MID_PLOT_TEXT,
+    ),
+        (
+        ROUND3_NA22_127_3MM_MID_CHANNEL_LO,
+        ROUND3_NA22_127_3MM_MID_CHANNEL_HI,
+        ROUND3_NA22_127_3MM_MID_PLOT_TEXT,
+    ),
+        (
+        ROUND3_NA22_127_2MM_MID_CHANNEL_LO,
+        ROUND3_NA22_127_2MM_MID_CHANNEL_HI,
+        ROUND3_NA22_127_2MM_MID_PLOT_TEXT,
+    ),
+        (
+        ROUND3_NA22_127_15MM_MID_CHANNEL_LO,
+        ROUND3_NA22_127_15MM_MID_CHANNEL_HI,
+        ROUND3_NA22_127_15MM_MID_PLOT_TEXT,
+    ),
+        (
+        ROUND3_NA22_127_1MM_MID_CHANNEL_LO,
+        ROUND3_NA22_127_1MM_MID_CHANNEL_HI,
+        ROUND3_NA22_127_1MM_MID_PLOT_TEXT,
+    ),
+    (
+        ROUND3_NA22_127_05MM_MID_CHANNEL_LO,
+        ROUND3_NA22_127_05MM_MID_CHANNEL_HI,
+        ROUND3_NA22_127_05MM_MID_PLOT_TEXT,
+    ),
+        (
+        ROUND3_NA22_127_6MM_TOP_CHANNEL_LO,
+        ROUND3_NA22_127_6MM_TOP_CHANNEL_HI,
+        ROUND3_NA22_127_6MM_TOP_PLOT_TEXT,
+    ),
+    (
+        ROUND3_NA22_127_45MM_TOP_CHANNEL_LO,
+        ROUND3_NA22_127_45MM_TOP_CHANNEL_HI,
+        ROUND3_NA22_127_45MM_TOP_PLOT_TEXT,
+    ),
+        (
+        ROUND3_NA22_127_3MM_TOP_CHANNEL_LO,
+        ROUND3_NA22_127_3MM_TOP_CHANNEL_HI,
+        ROUND3_NA22_127_3MM_TOP_PLOT_TEXT,
+    ),
+        (
+        ROUND3_NA22_127_2MM_TOP_CHANNEL_LO,
+        ROUND3_NA22_127_2MM_TOP_CHANNEL_HI,
+        ROUND3_NA22_127_2MM_TOP_PLOT_TEXT,
+    ),
+        (
+        ROUND3_NA22_127_15MM_TOP_CHANNEL_LO,
+        ROUND3_NA22_127_15MM_TOP_CHANNEL_HI,
+        ROUND3_NA22_127_15MM_TOP_PLOT_TEXT,
+    ),
+        (
+        ROUND3_NA22_127_1MM_TOP_CHANNEL_LO,
+        ROUND3_NA22_127_1MM_TOP_CHANNEL_HI,
+        ROUND3_NA22_127_1MM_TOP_PLOT_TEXT,
+    ),
+    (
+        ROUND3_NA22_127_05MM_TOP_CHANNEL_LO,
+        ROUND3_NA22_127_05MM_TOP_CHANNEL_HI,
+        ROUND3_NA22_127_05MM_TOP_PLOT_TEXT,
+    ),
+]
+
 
 # processing constants
 TAB_DELIMITER = "\t"
 DPI = int(1e3)
 ROUND0_SKIPROWS = 23
-ROUND2_SKIPROWS = ROUND1_SKIPROWS = 24
+ROUND3_SKIPROWS = ROUND2_SKIPROWS = ROUND1_SKIPROWS = 24
 COLS = (0, 2)
 COUNT_DTYPE = int
 FIT_PARAMETER_COUNT = 5
@@ -700,31 +1017,37 @@ def plot_step_counts(net_counts, dnet_counts,
 #ENDDEF
 
 
-def fit_round0_na22_127_net_counts():
-    """
-    Fit the net counts for each height to a line.
-    """
-    net_counts = ROUND0_NA22_127_STEP_NET_COUNTS[:, 0]
-    dnet_counts = ROUND0_NA22_127_STEP_NET_COUNTS[:, 1]
-    step_axis = np.arange(ROUND0_STEP_COUNT) + 1
-    initial_parameters = [22, 600]
+def plot_centroids(centroids, dcentroids,
+                   thicknesses, dthicknesses,
+                   save_file_path,
+                   title=None):
+    plt.figure()
+    plt.errorbar(thicknesses, centroids, xerr=dthicknesses,
+                 yerr=dcentroids, linestyle="None",
+                 fmt=".", ms=MARKER_SIZE, color="blue")
+    if title is not None:
+        plt.title(title)
+    plt.ylabel("Centroid (Channel)")
+    plt.xlabel("Absorber Thickness ($10^{-3}$ m)")
+    plt.savefig(save_file_path,
+                dpi=DPI)
+    return
+#ENDDEF
 
-    pf, cov, info, mesg, success = optimize.leastsq(
-        linear_residual, initial_parameters, args=(step_axis, net_counts, dnet_counts),
-        full_output=1,
-    )
 
-    chisq = sum(info["fvec"] ** 2)
-    dof = len(step_axis) - len(pf)
-    rchisq = chisq/dof
-    pferr = [np.sqrt(cov[i, i]) for i in range(len(pf))]
-    
-    print("p:\n{}".format(pf))
-    print("dp:\n{}".format(pferr))
-    print("rchisq:\n{}".format(rchisq))
-
-    heights_fit = np.linspace(step_axis[0], step_axis[-1], PLOT_FIT_SAMPLES)
-    fig = plt.figure()
+def plot_round3_top_centroids():
+    centroids = ROUND3_NA22_127_TOP_PEAKS[:, 0]
+    dcentroids = ROUND3_NA22_127_TOP_PEAKS[:, 1]
+    times = ROUND3_TOP_TIMES
+    save_file_path = ROUND3_NA22_127_CENTROIDS_TOP_SAVE_FILE_PATH
+    plt.figure()
+    plt.errorbar(times, centroids, yerr=dcentroids, color="blue",
+                 fmt=".", ms=MARKER_SIZE, linestyle="None")
+    plt.title("Na22 - 1.27 MeV - TOP - Centroids")
+    plt.ylabel("Centroid (Channel)")
+    plt.xlabel("End of Live Time (s)")
+    plt.savefig(save_file_path,
+                dpi=DPI)
 #ENDDEF
 
 
@@ -816,7 +1139,7 @@ def main():
             )
         #ENDFOR
     #ENDIF
-    if True:
+    if False:
         plot_step_counts(ROUND2_NA22_127_STEP_NET_COUNTS[:, 0],
                          ROUND2_NA22_127_STEP_NET_COUNTS[:, 1],
                          ROUND2_NA22_127_STEP_GROSS_COUNTS[:, 0],
@@ -826,6 +1149,47 @@ def main():
                          ROUND2_NA22_127_STEP_COUNTS_SAVE_FILE_PATH,
         )
     #ENDIF
+
+    # Round 3
+    if False:
+        # round3_na22_127_step_indices = np.arange(ROUND3_STEP_COUNT)
+        round3_na22_127_step_indices = np.array([
+            0,
+        ])
+        for i in round3_na22_127_step_indices:
+            (channel_lo, channel_hi, plot_text) = ROUND3_NA22_127_STEP_DATA[i]
+            gaussian_fit_and_plot(
+                ROUND3_NA22_STEP_DATA_FILE_PATHS[i],
+                channel_hi=channel_hi,
+                channel_lo=channel_lo,
+                initial_parameters=ROUND3_NA22_127_STEP_INITIAL_PARAMETERS,
+                plot_text=plot_text,
+                plot_title=ROUND3_NA22_127_STEP_PLOT_TITLES[i],
+                save_file_path=ROUND3_NA22_127_STEP_SAVE_FILE_PATHS[i],
+                skiprows=ROUND3_SKIPROWS,
+            )
+        #ENDFOR
+    #ENDIF
+    if False:
+        plot_step_counts(ROUND3_NA22_127_STEP_NET_COUNTS[:, 0],
+                         ROUND3_NA22_127_STEP_NET_COUNTS[:, 1],
+                         ROUND3_NA22_127_STEP_GROSS_COUNTS[:, 0],
+                         ROUND3_NA22_127_STEP_GROSS_COUNTS[:, 1],
+                         ROUND3_HEIGHTS,
+                         ROUND3_DHEIGHTS,
+                         ROUND3_NA22_127_STEP_COUNTS_SAVE_FILE_PATH,
+        )
+    #ENDIF
+    if True:
+        plot_centroids(ROUND3_NA22_127_MID_PEAKS[:, 0],
+                       ROUND3_NA22_127_MID_PEAKS[:, 1],
+                       ROUND3_THICKNESSES[:-1],
+                       ROUND3_DTHICKNESSES[:-1],
+                       ROUND3_NA22_127_CENTROIDS_MID_SAVE_FILE_PATH,
+                       title="Na22 - 1.27 MeV - MID - Centroids")
+    #ENDIF
+    if False:
+        plot_round3_top_centroids()
 #ENDDEF
 
 
