@@ -1,9 +1,11 @@
 """
-fit_na22_127.py - This module contains gaussian fits to the 1.27 MeV
-full energy peak for the Na22 source.
+fit.py - This module contains gaussian fits to the 1.27 MeV and 511 keV
+full energy peak for the Na22 source on varius data runs.
 
 round 0 - Data Round 1
 round 1 - Bonus Data 0.155cm absorber
+round 2 - Bonus Data 0.598cm absorber
+round 3 - Bonus Data
 
 Author: Thomas
 """
@@ -97,8 +99,8 @@ for step_name in ROUND3_NA22_STEP_NAMES:
 ROUND3_NA22_127_STEP_COUNTS_SAVE_FILE_PATH = os.path.join(
     ASSETS_PATH, "round3_na22_127_step_counts.png"
 )
-ROUND3_NA22_127_CENTROIDS_MID_SAVE_FILE_PATH = os.path.join(
-    ASSETS_PATH, "round3_na22_127_centroids_mid.png"
+ROUND3_NA22_CENTROIDS_MID_SAVE_FILE_PATH = os.path.join(
+    ASSETS_PATH, "round3_na22_centroids_mid.png"
 )
 ROUND3_NA22_127_CENTROIDS_TOP_SAVE_FILE_PATH = os.path.join(
     ASSETS_PATH, "round3_na22_127_centroids_top.png"
@@ -177,7 +179,7 @@ ROUND2_NA22_127_STEP_GROSS_COUNTS = np.array([
 ])
 
 # data constants - round 3
-# 6mm...0mm
+# 6mm...0.5mm
 ROUND3_NA22_127_MID_PEAKS = np.array([
     (716.8, 0.4),
     (717.0, 0.4),
@@ -186,6 +188,15 @@ ROUND3_NA22_127_MID_PEAKS = np.array([
     (716.8, 0.4),
     (716.8, 0.4),
     (715.7, 0.4),
+])
+ROUND3_NA22_511_MID_PEAKS = np.array([
+    (278.2, 0.1),
+    (278.1, 0.1),
+    (278.4, 0.1),
+    (278.5, 0.1),
+    (278.4, 0.1),
+    (278.5, 0.1),
+    (278.5, 0.1),
 ])
 # 0mm, 6mm...0.5mm
 ROUND3_NA22_127_TOP_PEAKS = np.array([
@@ -229,6 +240,7 @@ ROUND0_SOLID_ANGLES = solid_angle_cone(ROUND0_THETAS)
 ROUND0_DSOLID_ANGLES = None
 ROUND0_SOLID_ANGLE_RATIOS = ROUND0_SOLID_ANGLES / (4 * np.pi)
 ROUND0_DSOLID_ANGLE_RATIOS = None
+print(ROUND0_SOLID_ANGLE_RATIOS)
 # 300s live time / 60s live time = 5
 ROUND0_GROSS_ABSORBER_COUNTS = ROUND0_SOLID_ANGLES * 5 * GROSS_DETECTOR_COUNT_0 / SOLID_ANGLE_0
 ROUND0_DGROSS_ABSORBER_COUNTS = None
@@ -1017,19 +1029,33 @@ def plot_step_counts(net_counts, dnet_counts,
 #ENDDEF
 
 
-def plot_centroids(centroids, dcentroids,
-                   thicknesses, dthicknesses,
-                   save_file_path,
-                   title=None):
-    plt.figure()
-    plt.errorbar(thicknesses, centroids, xerr=dthicknesses,
-                 yerr=dcentroids, linestyle="None",
-                 fmt=".", ms=MARKER_SIZE, color="blue")
-    if title is not None:
-        plt.title(title)
-    plt.ylabel("Centroid (Channel)")
-    plt.xlabel("Absorber Thickness ($10^{-3}$ m)")
-    plt.savefig(save_file_path,
+def plot_round3_mid_centroids():
+    thicknesses = ROUND3_THICKNESSES[:-1]
+    dthicknesses = ROUND3_DTHICKNESSES[:-1]
+    centroids_127 = ROUND3_NA22_127_MID_PEAKS[:, 0]
+    dcentroids_127 = ROUND3_NA22_127_MID_PEAKS[:, 1]
+    centroids_511 = ROUND3_NA22_511_MID_PEAKS[:, 0]
+    dcentroids_511 = ROUND3_NA22_511_MID_PEAKS[:, 1]
+    ylabel = "Centroid (Channel)"
+    xlabel = "Absorber Thickness ($10^{-3}$ m)"
+    fig = plt.figure()
+    ax1 = plt.subplot(2, 1, 1)
+    plt.errorbar(thicknesses, centroids_127, xerr=dthicknesses,
+                 yerr=dcentroids_127, linestyle="None",
+                 fmt=".", ms=MARKER_SIZE, color="blue",
+                 label="1.27 MeV")
+    ax1.set_ylabel(ylabel)
+    ax1.legend()
+    ax2 = plt.subplot(2, 1, 2)
+    plt.errorbar(thicknesses, centroids_511, xerr=dthicknesses,
+                 yerr=dcentroids_511, linestyle="None",
+                 fmt=".", ms=MARKER_SIZE, color="red",
+                 label="511 keV")
+    ax2.set_ylabel(ylabel)
+    ax2.set_xlabel(xlabel)
+    ax2.legend()
+    plt.suptitle("Na22 - MID - Centroids")
+    plt.savefig(ROUND3_NA22_CENTROIDS_MID_SAVE_FILE_PATH,
                 dpi=DPI)
     return
 #ENDDEF
@@ -1180,13 +1206,8 @@ def main():
                          ROUND3_NA22_127_STEP_COUNTS_SAVE_FILE_PATH,
         )
     #ENDIF
-    if True:
-        plot_centroids(ROUND3_NA22_127_MID_PEAKS[:, 0],
-                       ROUND3_NA22_127_MID_PEAKS[:, 1],
-                       ROUND3_THICKNESSES[:-1],
-                       ROUND3_DTHICKNESSES[:-1],
-                       ROUND3_NA22_127_CENTROIDS_MID_SAVE_FILE_PATH,
-                       title="Na22 - 1.27 MeV - MID - Centroids")
+    if False:
+        plot_round3_mid_centroids()
     #ENDIF
     if False:
         plot_round3_top_centroids()
