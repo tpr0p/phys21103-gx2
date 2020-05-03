@@ -898,7 +898,7 @@ def linear_residual(p, x, y, yerr):
 def gaussian_fitfunc(p, x):
     """
     Fit to a Gaussian with linear background:
-    \frac{N_{0}}{\sigma 2 \pi} \exp{\frac{-(x - \mu)^{2}}{2 {\sigma}^{2}}} + A + Bx
+    \frac{N_{0}}{\sigma \sqrt{2 \pi}} \exp{\frac{-(x - \mu)^{2}}{2 {\sigma}^{2}}} + A + Bx
     """
     return (
         (p[0] / (p[2] * np.sqrt(2 * np.pi))) * np.exp(-((x - p[1]) ** 2) / (2 * p[2] ** 2))
@@ -1004,7 +1004,8 @@ def gaussian_fit_and_plot(data_file_path,
 def plot_step_counts(net_counts, dnet_counts,
                      gross_counts, dgross_counts,
                      heights, dheights,
-                     save_file_path):
+                     save_file_path,
+                     title=None):
     """
     Plot the net count obtained from the Na22 1.27 MeV peak fit for each
     step measurement.
@@ -1019,7 +1020,10 @@ def plot_step_counts(net_counts, dnet_counts,
     plt.errorbar(heights, gross_counts, xerr=dheights,
                  yerr=dgross_counts, linestyle="None",
                  fmt=".", ms=MARKER_SIZE, color="red", label="Gross")
-    plt.title("Na22 - 1.27 MeV - Counts")
+    if title is not None:
+        plt.title(title)
+    else:
+        plt.title("Na22 - 1.27 MeV - Counts")
     plt.ylabel("Counts")
     plt.xlabel("Distance from Source ($10^{-3}$ m)")
     plt.legend()
@@ -1111,6 +1115,7 @@ def main():
                          ROUND0_HEIGHTS,
                          ROUND0_DHEIGHTS,
                          ROUND0_NA22_127_STEP_COUNTS_SAVE_FILE_PATH,
+                         title="Na22 - 1.27 MeV - Experiment 1 - Counts"
         )
     #ENDIF
 
@@ -1142,6 +1147,7 @@ def main():
                          ROUND1_HEIGHTS,
                          ROUND1_DHEIGHTS,
                          ROUND1_NA22_127_STEP_COUNTS_SAVE_FILE_PATH,
+                         title="Na22 - 1.27 MeV - Experiment 3 - Counts",
         )
     #ENDIF
 
@@ -1173,6 +1179,7 @@ def main():
                          ROUND2_HEIGHTS,
                          ROUND2_DHEIGHTS,
                          ROUND2_NA22_127_STEP_COUNTS_SAVE_FILE_PATH,
+                         title="Na22 - 1.27 MeV - Experiment 2 - Counts",
         )
     #ENDIF
 
