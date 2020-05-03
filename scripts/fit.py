@@ -255,7 +255,18 @@ ROUND2_DHEIGHTS = ROUND1_DHEIGHTS = np.array([2, 2,  2,   2,   2])
 # data constants - round 3 apparatus (lengths in 1e-3 m)
 ROUND3_THICKNESSES = np.array([5.98, 4.52, 3.04, 1.96, 1.55, 1.00, 0.49, 0,])
 ROUND3_DTHICKNESSES = np.array([1e-2] * len(ROUND3_THICKNESSES))
-ROUND3_TOP_TIMES = np.array([602, 1233, 1901, 5346, 5858, 6557, 7091, 7524])
+ROUND3_TOP_TIMES = np.array([
+    (1351, 1953),
+    (2283, 2584),
+    (2951, 3252),
+    (6396, 6697),
+    (6908, 7209),
+    (7607, 7908),
+    (8141, 8442),
+    (8574, 8875),
+])
+DTIME = 0.01 #s
+
 
 # data constants - gaussian fits - round 0
 ROUND0_NA22_127_STEP_INITIAL_PARAMETERS = [200., 750., 10., 1., 1.]
@@ -1068,14 +1079,14 @@ def plot_round3_mid_centroids():
 def plot_round3_top_centroids():
     centroids = ROUND3_NA22_127_TOP_PEAKS[:, 0]
     dcentroids = ROUND3_NA22_127_TOP_PEAKS[:, 1]
-    times = ROUND3_TOP_TIMES
+    times = ROUND3_TOP_TIMES[:, 0]
     save_file_path = ROUND3_NA22_127_CENTROIDS_TOP_SAVE_FILE_PATH
     plt.figure()
     plt.errorbar(times, centroids, yerr=dcentroids, color="blue",
                  fmt=".", ms=MARKER_SIZE, linestyle="None")
     plt.title("Na22 - 1.27 MeV - TOP - Centroids")
     plt.ylabel("Centroid (Channel)")
-    plt.xlabel("End of Live Time (s)")
+    plt.xlabel("Final Time (s)")
     plt.savefig(save_file_path,
                 dpi=DPI)
 #ENDDEF
@@ -1147,7 +1158,7 @@ def main():
                          ROUND1_HEIGHTS,
                          ROUND1_DHEIGHTS,
                          ROUND1_NA22_127_STEP_COUNTS_SAVE_FILE_PATH,
-                         title="Na22 - 1.27 MeV - Experiment 3 - Counts",
+                         title="Na22 - 1.27 MeV - Experiment 2 - Counts",
         )
     #ENDIF
 
